@@ -12,7 +12,7 @@ RUN npm run build-server
 # CMD npm run -d start
 FROM node:lts-bullseye
 
-COPY --from=builder /home/node/app/server-dist /home/node/app
+COPY --from=builder /home/node/app/dist-server /home/node/app
 RUN mkdir /home/node/node_modules
 COPY --from=builder /home/node/app/node_modules /home/node/node_modules
 WORKDIR /home/node/app
