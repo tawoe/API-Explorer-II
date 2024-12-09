@@ -85,6 +85,7 @@
     },
     created() {
       this.chatBotUrl = import.meta.env.VITE_CHATBOT_URL
+      console.log('here is this.chatBotUrl: ', this.chatBotUrl)
       this.obpApiHost = inject(obpApiHostKey);
       this.checkLoginStatus();
     },

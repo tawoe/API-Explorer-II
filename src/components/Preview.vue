@@ -29,9 +29,10 @@
 import { ref, reactive, inject, onBeforeMount } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { getOperationDetails } from '../obp/resource-docs'
-import type { ElNotification, FormInstance } from 'element-plus'
+import { ElNotification, FormInstance } from 'element-plus'
 import { OBP_API_VERSION, get, create, update, discard, createEntitlement, getCurrentUser } from '../obp'
 import { obpResourceDocsKey } from '@/obp/keys'
+import * as cheerio from 'cheerio'
 
 const elMessageDuration = 5500
 const configVersion = 'OBP' + OBP_API_VERSION
@@ -77,7 +78,7 @@ const setOperationDetails = (id: string, version: string): void => {
   showRequiredRoles.value = requiredRoles.value.length > 0
   showValidations.value = validations.value.length > 0
   showPossibleErrors.value = possibleErrors.value.length > 0
-  showConnectorMethods.value = connectorMethods.value.length > 0
+  showConnectorMethods.value = true
   footNote.value.version = operation.operation_id
   footNote.value.version = operation.implemented_by.version
   footNote.value.functionName = operation.implemented_by.function
@@ -202,6 +203,38 @@ onBeforeRouteUpdate((to) => {
   responseHeaderTitle.value = 'TYPICAL SUCCESSFUL RESPONSE'
   setRoleForm()
 })
+
+const copyToClipboard = () => {
+  // Create a temporary text area to hold the content
+  const textArea = document.createElement('textarea');
+
+  // Parse the HTML content with Cheerio
+  const $ = cheerio.load(successResponseBody.value);
+
+  // Extract all JSON lines
+  const jsonLines: string[] = [];
+  $('.hljs-ln-code').each((_, element) => {
+      jsonLines.push($(element).text());
+  });
+
+  // Combine lines to form raw JSON
+  const rawJson = jsonLines.join('\n');
+
+  textArea.value = rawJson; // Set the text to copy
+  document.body.appendChild(textArea); // Append the text area to the DOM
+  textArea.select(); // Select the text inside the text area
+  document.execCommand('copy'); // Execute the copy command
+  document.body.removeChild(textArea); // Remove the text area from the DOM
+
+  // Show feedback to the user
+  ElNotification({
+    message: 'Response copied to clipboard!',
+    type: 'success',
+    duration: elMessageDuration
+  });
+};
+
+
 </script>
 
 <template>
@@ -231,8 +264,10 @@ onBeforeRouteUpdate((to) => {
     </div>
     <div v-show="successResponseBody">
       <pre>
-        {{responseHeaderTitle}}:
-        <code><div id="code" v-html="successResponseBody"></div></code>
+        {{ responseHeaderTitle }}:
+        <code>
+          <div @click="copyToClipboard" id="code" v-html="successResponseBody"></div>
+        </code>
       </pre>
     </div>
     <el-form ref="roleFormRef" :model="roleForm">
@@ -294,7 +329,9 @@ onBeforeRouteUpdate((to) => {
       <p>{{ $t('preview.connector_methods') }}:</p>
       <ul>
         <li v-for="method in connectorMethods" :key="method" :name="method">
-          {{ method }}
+          <a id="conector-method-link" :href="`/message-docs/rabbitmq_vOct2024/#${method}` " >
+            {{ method }}
+          </a>
         </li>
       </ul>
     </div>
@@ -412,5 +449,9 @@ li {
 #request-role-button-panel {
   width: 95%;
   margin: 0 0 -30px 0;
+}
+
+#conector-method-link {
+  color: white !important;
 }
 </style>

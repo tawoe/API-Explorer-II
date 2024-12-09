@@ -44,6 +44,7 @@ export const useConnectionStore = defineStore("connection", {
      */
     bindEvents() {
       socket.on("connect", () => {
+        console.log("websocket connection established")
         this.isConnected = true;
       });
 

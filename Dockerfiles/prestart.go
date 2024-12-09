@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	config := []string{"VITE_OBP_API_HOST", "VITE_OBP_API_MANAGER_HOST"}
+	config := []string{"VITE_OBP_API_HOST", "VITE_OBP_API_MANAGER_HOST", "VITE_OBP_API_PORTAL_HOST"}
 	configMap := make(map[string]string)
 
 	for _, key := range config {

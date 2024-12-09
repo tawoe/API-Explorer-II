@@ -37,6 +37,16 @@ or
 npm run dev
 ```
 
+##### Get a Consumer Key for the OBP-API
+
+API Explorer needs a Consumer Key / Secret to access the Open Bank Project API with OAuth.
+To get this Consumer, go to the Portal of OBP-API, login and "Get a Consumer Key".
+The callback URL (if running locally) should be http://localhost:5173/api/callback
+Copy and paste the Consumer Key and Consumer Secret and add it to your .env file here.
+You can use .env.example as a basis of your .env file. 
+
+
+
 ##### ~~Run Unit Tests with [Vitest](https://vitest.dev/)~~
 
 <strike>

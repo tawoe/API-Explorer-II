@@ -33,6 +33,7 @@ import OauthAccessTokenMiddleware from '../middlewares/OauthAccessTokenMiddlewar
 @Service()
 @Controller()
 @UseBefore(OauthAccessTokenMiddleware)
+// This controller seems to not do anything at all
 export default class CallbackController {
   @Get('/callback')
   callback(@Req() request: Request, @Res() response: Response): Response {

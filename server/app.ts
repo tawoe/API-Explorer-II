@@ -44,15 +44,25 @@ process.env.VITE_OBP_REDIS_URL
   ? console.log(`VITE_OBP_REDIS_URL: ${process.env.VITE_OBP_REDIS_URL}`)
   : console.log(`VITE_OBP_REDIS_URL: undefined connects to localhost on port 6379`)
 
-const redisPassword = process.env.VITE_OBP_REDIS_PASSWORD 
+const redisPassword = process.env.VITE_OBP_REDIS_PASSWORD
   ? process.env.VITE_OBP_REDIS_PASSWORD // Redis instance is protected with a password
   : '' // Specify an empty password (i.e., no password) when connecting to Redis
-if(!redisPassword) {
+if (!redisPassword) {
   console.warn(`VITE_OBP_REDIS_PASSWORD is not provided.`)
+}
+const redisUsername = process.env.VITE_OBP_REDIS_USERNAME
+  ? process.env.VITE_OBP_REDIS_USERNAME // Redis instance is protected with a username/password
+  : '' // Specify an empty username (i.e., no username) when connecting to Redis
+if (!redisUsername) {
+  console.warn(`VITE_OBP_REDIS_USERNAME is not provided.`)
 }
 console.log(`-----------------------------------------------------------------`)
 const redisClient = process.env.VITE_OBP_REDIS_URL
-  ? createClient({ url: process.env.VITE_OBP_REDIS_URL, password: redisPassword })
+  ? createClient({
+      url: process.env.VITE_OBP_REDIS_URL,
+      username: redisUsername,
+      password: redisPassword
+    })
   : createClient()
 redisClient.connect().catch(console.error)
 

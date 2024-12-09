@@ -26,7 +26,7 @@
   -->
 
 <script setup lang="ts">
-import { ref, inject, watchEffect, onMounted } from 'vue'
+import { ref, inject, watchEffect, onMounted, computed } from 'vue'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { OBP_API_VERSION, getCurrentUser } from '../obp'
@@ -42,6 +42,8 @@ import { obpApiActiveVersionsKey, obpGroupedMessageDocsKey, obpMyCollectionsEndp
 const route = useRoute()
 const router = useRouter()
 const obpApiHost = ref(import.meta.env.VITE_OBP_API_HOST)
+const obpApiPortalHost = ref(import.meta.env.VITE_OBP_API_PORTAL_HOST)
+const obpApiHybridPost = computed(() => obpApiPortalHost.value ? obpApiPortalHost.value : obpApiHost.value)
 const obpApiManagerHost = ref(import.meta.env.VITE_OBP_API_MANAGER_HOST)
 const loginUsername = ref('')
 const logoffurl = ref('')
@@ -115,7 +117,7 @@ watchEffect(() => {
   <img alt="OBP logo" class="logo" v-show="!logo" src="@/assets/logo2x-1.png" />
   <nav id="nav">
     <RouterView name="header">
-      <a v-bind:href="obpApiHost" class="router-link" id="header-nav-home">
+      <a v-bind:href="obpApiHybridPost" class="router-link" id="header-nav-home">
         {{ $t('header.portal_home') }}
       </a>
       <RouterLink class="router-link" id="header-nav-tags" :to="'/operationid?version=OBP' + OBP_API_VERSION">{{

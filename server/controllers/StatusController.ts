@@ -40,7 +40,8 @@ export class StatusController {
     'kafka_vSept2018',
     'akka_vDec2018',
     'rest_vMar2019',
-    'stored_procedure_vDec2019'
+    'stored_procedure_vDec2019',
+    'rabbitmq_vOct2024'
   ]
   constructor(
     private obpClientService: OBPClientService,
@@ -54,6 +55,7 @@ export class StatusController {
   ): Response {
     const oauthConfig = session['clientConfig']
     const version = this.obpClientService.getOBPVersion()
+    const currentUser = await this.obpClientService.get(`/obp/${version}/users/current`, oauthConfig)
     const apiVersions = await this.checkApiVersions(oauthConfig, version)
     const messageDocs = await this.checkMessagDocs(oauthConfig, version)
     const resourceDocs = await this.checkResourceDocs(oauthConfig, version)
@@ -61,7 +63,8 @@ export class StatusController {
       status: apiVersions && messageDocs && resourceDocs,
       apiVersions,
       messageDocs,
-      resourceDocs
+      resourceDocs,
+      currentUser
     })
   }
 
