@@ -6,7 +6,7 @@ on:
     - '*'
     - '!develop'
 env:
-  DOCKER_HUB_ORGANIZATION: ${{ vars.DOCKER_HUB_ORGANIZATION }}
+  DOCKER_HUB_ORGANIZATION: tawoe
   DOCKER_HUB_REPOSITORY: api-explorer-ii
 
 
