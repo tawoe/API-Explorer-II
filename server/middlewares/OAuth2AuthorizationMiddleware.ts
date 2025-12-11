@@ -28,8 +28,8 @@
 import { ExpressMiddlewareInterface } from 'routing-controllers'
 import { Request, Response } from 'express'
 import { Service, Container } from 'typedi'
-import { OAuth2Service } from '../services/OAuth2Service.js'
-import { PKCEUtils } from '../utils/pkce.js'
+import { OAuth2Service } from '../services/OAuth2Service'
+import { PKCEUtils } from '../utils/pkce'
 
 /**
  * OAuth2 Authorization Middleware

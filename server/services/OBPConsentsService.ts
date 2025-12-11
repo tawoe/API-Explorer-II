@@ -8,11 +8,11 @@ import {
   InlineResponse2017,
   ErrorUserNotLoggedIn
 } from 'obp-api-typescript'
-import OBPClientService from './OBPClientService.js'
+import OBPClientService from './OBPClientService'
 import { AxiosResponse } from 'axios'
 import axios from 'axios'
 import { Session } from 'express-session'
-import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants.js'
+import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants'
 
 @Service()
 /**

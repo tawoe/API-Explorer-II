@@ -27,16 +27,16 @@
 
 import { Controller, Session, Req, Res, Get } from 'routing-controllers'
 import { Request, Response } from 'express'
-import OBPClientService from '../services/OBPClientService.js'
+import OBPClientService from '../services/OBPClientService'
 
 import { Service, Container } from 'typedi'
 import { OAuthConfig } from 'obp-typescript'
-import { commitId } from '../utils/app-info.js'
+import { commitId } from '../utils/app-info'
 import {
   RESOURCE_DOCS_API_VERSION,
   MESSAGE_DOCS_API_VERSION,
   API_VERSIONS_LIST_API_VERSION
-} from '../../src/shared-constants.js'
+} from '../../src/shared-constants'
 
 @Service()
 @Controller('/status')

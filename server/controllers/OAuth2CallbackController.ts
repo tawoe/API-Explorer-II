@@ -28,7 +28,7 @@
 import { Controller, Req, Res, Get, UseBefore } from 'routing-controllers'
 import { Request, Response } from 'express'
 import { Service } from 'typedi'
-import OAuth2CallbackMiddleware from '../middlewares/OAuth2CallbackMiddleware.js'
+import OAuth2CallbackMiddleware from '../middlewares/OAuth2CallbackMiddleware'
 
 /**
  * OAuth2 Callback Controller

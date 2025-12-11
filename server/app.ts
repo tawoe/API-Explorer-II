@@ -35,14 +35,11 @@ import { useExpressServer, useContainer } from 'routing-controllers'
 import { Container } from 'typedi'
 import path from 'path'
 
-import { OAuth2Service } from './services/OAuth2Service.js'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
-import './utils/app-info.js' // Initialize commit ID
+import { OAuth2Service } from './services/OAuth2Service'
+import './utils/app-info' // Initialize commit ID
 
-// ES modules equivalent of __dirname
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+// __dirname is available in CommonJS
+// const __dirname is automatically available
 
 const port = 8085
 const app: Application = express()
@@ -155,8 +152,8 @@ let instance: any
 
   const server = useExpressServer(app, {
     routePrefix: routePrefix,
-    controllers: [path.join(__dirname, 'controllers', '*.*s')],
-    middlewares: [path.join(__dirname, 'middlewares', '*.*s')]
+    controllers: [path.join(__dirname + '/controllers/*.*s')],
+    middlewares: [path.join(__dirname + '/middlewares/*.*s')]
   })
 
   instance = server.listen(port)
