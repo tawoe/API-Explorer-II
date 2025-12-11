@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ES2022",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "target": "ES2020",
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
     "outDir": "dist-server",
     "rootDir": ".",
     "resolveJsonModule": true,
@@ -11,6 +12,6 @@
     "experimentalDecorators": true,
     "allowJs": true
   },
-  "exclude": ["server/test", "node_modules"],
-  "include": ["server", "src/shared-constants.ts"]
+  "exclude": ["node_modules", "dist-server", "server/test", "src-svelte", "src/test"],
+  "include": ["server/**/*", "src/shared-constants.ts"]
 }

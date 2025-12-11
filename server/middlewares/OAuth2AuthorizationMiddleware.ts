@@ -28,8 +28,8 @@
 import { ExpressMiddlewareInterface } from 'routing-controllers'
 import { Request, Response } from 'express'
 import { Service, Container } from 'typedi'
-import { OAuth2Service } from '../services/OAuth2Service'
-import { PKCEUtils } from '../utils/pkce'
+import { OAuth2Service } from '../services/OAuth2Service.js'
+import { PKCEUtils } from '../utils/pkce.js'
 
 /**
  * OAuth2 Authorization Middleware
@@ -77,18 +77,18 @@ export default class OAuth2AuthorizationMiddleware implements ExpressMiddlewareI
     // Check if OAuth2 service exists and is initialized
     if (!this.oauth2Service) {
       console.error('OAuth2AuthorizationMiddleware: OAuth2 service is null/undefined')
-      return response
-        .status(500)
-        .send('OAuth2 service not available. Please check server configuration.')
+      response.status(500).send('OAuth2 service not available. Please check server configuration.')
+      return
     }
 
     if (!this.oauth2Service.isInitialized()) {
       console.error('OAuth2AuthorizationMiddleware: OAuth2 service not initialized')
-      return response
+      response
         .status(500)
         .send(
           'OAuth2 service not initialized. Please check server configuration and OIDC provider availability.'
         )
+      return
     }
 
     const session = request.session
@@ -152,7 +152,8 @@ export default class OAuth2AuthorizationMiddleware implements ExpressMiddlewareI
       delete session['oauth2_flow_timestamp']
       delete session['oauth2_redirect_page']
 
-      return response.status(500).send(`Failed to initiate OAuth2 flow: ${error.message}`)
+      response.status(500).send(`Failed to initiate OAuth2 flow: ${error.message}`)
+      return
     }
   }
 }

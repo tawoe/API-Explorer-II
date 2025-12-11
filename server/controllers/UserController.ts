@@ -27,10 +27,10 @@
 
 import { Controller, Session, Req, Res, Get } from 'routing-controllers'
 import { Request, Response } from 'express'
-import OBPClientService from '../services/OBPClientService'
+import OBPClientService from '../services/OBPClientService.js'
 import { Service, Container } from 'typedi'
-import { OAuth2Service } from '../services/OAuth2Service'
-import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants'
+import { OAuth2Service } from '../services/OAuth2Service.js'
+import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants.js'
 
 @Service()
 @Controller('/user')
@@ -50,7 +50,7 @@ export class UserController {
     @Session() session: any,
     @Req() request: Request,
     @Res() response: Response
-  ): Response {
+  ): Promise<Response> {
     console.log('UserController: Logging out user')
 
     // Clear OAuth2 session data
@@ -91,7 +91,7 @@ export class UserController {
     @Session() session: any,
     @Req() request: Request,
     @Res() response: Response
-  ): Response {
+  ): Promise<Response> {
     console.log('UserController: Getting current user')
 
     // Check OAuth2 session

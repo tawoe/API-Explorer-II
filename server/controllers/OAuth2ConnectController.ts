@@ -28,7 +28,7 @@
 import { Controller, Req, Res, Get, UseBefore } from 'routing-controllers'
 import { Request, Response } from 'express'
 import { Service } from 'typedi'
-import OAuth2AuthorizationMiddleware from '../middlewares/OAuth2AuthorizationMiddleware'
+import OAuth2AuthorizationMiddleware from '../middlewares/OAuth2AuthorizationMiddleware.js'
 
 /**
  * OAuth2 Connect Controller

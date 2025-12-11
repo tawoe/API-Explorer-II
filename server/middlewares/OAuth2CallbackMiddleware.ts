@@ -28,8 +28,8 @@
 import { ExpressMiddlewareInterface } from 'routing-controllers'
 import { Request, Response } from 'express'
 import { Service, Container } from 'typedi'
-import { OAuth2Service } from '../services/OAuth2Service'
-import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants'
+import { OAuth2Service } from '../services/OAuth2Service.js'
+import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants.js'
 import jwt from 'jsonwebtoken'
 
 /**
@@ -90,7 +90,7 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
 
       this.cleanupSession(session)
 
-      return response.status(400).send(`
+      response.status(400).send(`
         <html>
           <head>
             <title>Authentication Error</title>
@@ -113,6 +113,7 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
           </body>
         </html>
       `)
+      return
     }
 
     // Validate required parameters
@@ -123,7 +124,7 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
 
       this.cleanupSession(session)
 
-      return response.status(400).send(`
+      response.status(400).send(`
         <html>
           <head>
             <title>Invalid Request</title>
@@ -145,6 +146,7 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
           </body>
         </html>
       `)
+      return
     }
 
     // Validate state parameter (CSRF protection)
@@ -156,7 +158,7 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
 
       this.cleanupSession(session)
 
-      return response.status(400).send(`
+      response.status(400).send(`
         <html>
           <head>
             <title>Security Error</title>
@@ -178,6 +180,7 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
           </body>
         </html>
       `)
+      return
     }
 
     // Get code verifier from session
@@ -188,7 +191,7 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
 
       this.cleanupSession(session)
 
-      return response.status(400).send(`
+      response.status(400).send(`
         <html>
           <head>
             <title>Session Error</title>
@@ -203,13 +206,14 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
           <body>
             <div class="error">
               <h1>Session Error</h1>
-              <p>Your session has expired or is invalid.</p>
-              <p>Please try logging in again.</p>
+              <p>Your session has expired or is invalid. The authentication process cannot continue.</p>
+              <p>Please start the login process again.</p>
             </div>
             <a href="/">Return to Home</a>
           </body>
         </html>
       `)
+      return
     }
 
     // Check flow timestamp (prevent replay attacks)
@@ -224,10 +228,10 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
 
         this.cleanupSession(session)
 
-        return response.status(400).send(`
+        response.status(400).send(`
           <html>
             <head>
-              <title>Flow Expired</title>
+              <title>Token Exchange Error</title>
               <style>
                 body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
                 .error { background-color: #fee; border: 1px solid #fcc; padding: 15px; border-radius: 5px; }
@@ -238,14 +242,15 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
             </head>
             <body>
               <div class="error">
-                <h1>Authorization Flow Expired</h1>
-                <p>The authorization flow has expired (timeout: 10 minutes).</p>
+                <h1>Token Exchange Failed</h1>
+                <p>Failed to exchange authorization code for access token.</p>
                 <p>Please try logging in again.</p>
               </div>
               <a href="/">Return to Home</a>
             </body>
           </html>
         `)
+        return
       }
     }
 
@@ -358,31 +363,29 @@ export default class OAuth2CallbackMiddleware implements ExpressMiddlewareInterf
 
       this.cleanupSession(session)
 
-      return response.status(500).send(`
+      response.status(500).send(`
         <html>
           <head>
-            <title>Authentication Failed</title>
+            <title>Authentication Error</title>
             <style>
               body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
               .error { background-color: #fee; border: 1px solid #fcc; padding: 15px; border-radius: 5px; }
               h1 { color: #c00; }
-              p { margin: 10px 0; }
               a { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; }
               a:hover { background-color: #0056b3; }
-              code { background-color: #f5f5f5; padding: 2px 5px; border-radius: 3px; }
             </style>
           </head>
           <body>
             <div class="error">
               <h1>Authentication Failed</h1>
-              <p>Failed to complete authentication with the identity provider.</p>
-              <p><strong>Error:</strong> <code>${this.escapeHtml(error.message)}</code></p>
-              <p>Please try logging in again. If the problem persists, contact support.</p>
+              <p>An unexpected error occurred during authentication.</p>
+              <p>Please try logging in again.</p>
             </div>
             <a href="/">Return to Home</a>
           </body>
         </html>
       `)
+      return
     }
   }
 

@@ -26,7 +26,7 @@
  */
 
 import { Service } from 'typedi'
-import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants'
+import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants.js'
 
 // Custom error class to preserve HTTP status codes
 class OBPAPIError extends Error {

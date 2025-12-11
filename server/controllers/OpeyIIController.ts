@@ -3,11 +3,11 @@ import { Request, Response } from 'express'
 import { Readable } from 'node:stream'
 import { ReadableStream as WebReadableStream } from 'stream/web'
 import { Service, Container } from 'typedi'
-import OBPClientService from '../services/OBPClientService'
-import OpeyClientService from '../services/OpeyClientService'
-import OBPConsentsService from '../services/OBPConsentsService'
+import OBPClientService from '../services/OBPClientService.js'
+import OpeyClientService from '../services/OpeyClientService.js'
+import OBPConsentsService from '../services/OBPConsentsService.js'
 
-import { UserInput, OpeyConfig } from '../schema/OpeySchema'
+import { UserInput, OpeyConfig } from '../schema/OpeySchema.js'
 import {
   APIApi,
   Configuration,

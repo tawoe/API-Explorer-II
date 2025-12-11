@@ -1,9 +1,10 @@
 {
   "files": [],
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ES2022",
     "esModuleInterop": true,
-    "target": "ES6",
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
     "outDir": "dist",
     "baseUrl": "src",
     "resolveJsonModule": true,

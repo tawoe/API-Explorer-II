@@ -27,7 +27,7 @@
 
 import { Controller, Session, Req, Res, Get, Delete, Post, Put } from 'routing-controllers'
 import { Request, Response } from 'express'
-import OBPClientService from '../services/OBPClientService'
+import OBPClientService from '../services/OBPClientService.js'
 import { Service, Container } from 'typedi'
 
 @Service()
@@ -41,12 +41,16 @@ export class OBPController {
   }
 
   @Get('/get')
-  async get(@Session() session: any, @Req() request: Request, @Res() response: Response): Response {
+  async get(
+    @Session() session: any,
+    @Req() request: Request,
+    @Res() response: Response
+  ): Promise<Response> {
     const path = request.query.path
     const oauthConfig = session['clientConfig']
 
     try {
-      const result = await this.obpClientService.get(path, oauthConfig)
+      const result = await this.obpClientService.get(path as string, oauthConfig)
       return response.json(result)
     } catch (error: any) {
       // 401 errors are expected when user is not authenticated - log as info, not error
@@ -69,7 +73,7 @@ export class OBPController {
     @Session() session: any,
     @Req() request: Request,
     @Res() response: Response
-  ): Response {
+  ): Promise<Response> {
     const path = request.query.path
     const data = request.body
     const oauthConfig = session['clientConfig']
@@ -85,7 +89,7 @@ export class OBPController {
     console.log('  oauth2_user exists:', session?.oauth2_user ? 'YES' : 'NO')
 
     try {
-      const result = await this.obpClientService.create(path, data, oauthConfig)
+      const result = await this.obpClientService.create(path as string, data, oauthConfig)
       return response.json(result)
     } catch (error: any) {
       console.error('RequestController.create error:', error)
@@ -101,13 +105,13 @@ export class OBPController {
     @Session() session: any,
     @Req() request: Request,
     @Res() response: Response
-  ): Response {
+  ): Promise<Response> {
     const path = request.query.path
     const data = request.body
     const oauthConfig = session['clientConfig']
 
     try {
-      const result = await this.obpClientService.update(path, data, oauthConfig)
+      const result = await this.obpClientService.update(path as string, data, oauthConfig)
       return response.json(result)
     } catch (error: any) {
       console.error('RequestController.update error:', error)
@@ -123,12 +127,12 @@ export class OBPController {
     @Session() session: any,
     @Req() request: Request,
     @Res() response: Response
-  ): Response {
+  ): Promise<Response> {
     const path = request.query.path
     const oauthConfig = session['clientConfig']
 
     try {
-      const result = await this.obpClientService.discard(path, oauthConfig)
+      const result = await this.obpClientService.discard(path as string, oauthConfig)
       return response.json(result)
     } catch (error: any) {
       console.error('RequestController.delete error:', error)

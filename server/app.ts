@@ -34,11 +34,15 @@ import express, { Application } from 'express'
 import { useExpressServer, useContainer } from 'routing-controllers'
 import { Container } from 'typedi'
 import path from 'path'
-import { execSync } from 'child_process'
-import { OAuth2Service } from './services/OAuth2Service'
 
-// __dirname is available in CommonJS
-// const __dirname is automatically available
+import { OAuth2Service } from './services/OAuth2Service.js'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
+import './utils/app-info.js' // Initialize commit ID
+
+// ES modules equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const port = 8085
 const app: Application = express()
@@ -151,8 +155,8 @@ let instance: any
 
   const server = useExpressServer(app, {
     routePrefix: routePrefix,
-    controllers: [path.join(__dirname + '/controllers/*.*s')],
-    middlewares: [path.join(__dirname + '/middlewares/*.*s')]
+    controllers: [path.join(__dirname, 'controllers', '*.*s')],
+    middlewares: [path.join(__dirname, 'middlewares', '*.*s')]
   })
 
   instance = server.listen(port)
@@ -160,20 +164,6 @@ let instance: any
   console.log(
     `Backend is running. You can check a status at http://localhost:${port}${routePrefix}/status`
   )
-
-  // Get commit ID
-  try {
-    // Try to get the commit ID
-    commitId = execSync('git rev-parse HEAD', { encoding: 'utf-8' }).trim()
-    console.log('Current Commit ID:', commitId)
-  } catch (error) {
-    // Log the error but do not terminate the process
-    console.error('Warning: Failed to retrieve the commit ID. Proceeding without it.')
-    console.error('Error details:', error.message)
-    commitId = 'unknown' // Assign a fallback value
-  }
-  // Continue execution with or without a valid commit ID
-  console.log('Execution continues with commitId:', commitId)
 
   // Error Handling to Shut Down the App
   instance.on('error', (err) => {
@@ -190,8 +180,5 @@ let instance: any
 
 // Export instance for use in other modules
 export { instance }
-
-// Commit ID variable
-export let commitId = ''
 
 export default app
