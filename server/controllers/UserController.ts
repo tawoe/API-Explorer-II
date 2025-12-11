@@ -30,7 +30,7 @@ import { Request, Response } from 'express'
 import OBPClientService from '../services/OBPClientService'
 import { Service, Container } from 'typedi'
 import { OAuth2Service } from '../services/OAuth2Service'
-import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants'
+import { DEFAULT_OBP_API_VERSION } from '../shared-constants'
 
 @Service()
 @Controller('/user')
@@ -46,11 +46,7 @@ export class UserController {
   }
 
   @Get('/logoff')
-  async logout(
-    @Session() session: any,
-    @Req() request: Request,
-    @Res() response: Response
-  ): Response {
+  async logout(session: any, request: Request, response: Response): Promise<Response> {
     console.log('UserController: Logging out user')
 
     // Clear OAuth2 session data
@@ -87,11 +83,7 @@ export class UserController {
   }
 
   @Get('/current')
-  async current(
-    @Session() session: any,
-    @Req() request: Request,
-    @Res() response: Response
-  ): Response {
+  async current(session: any, request: Request, response: Response): Promise<Response> {
     console.log('UserController: Getting current user')
 
     // Check OAuth2 session

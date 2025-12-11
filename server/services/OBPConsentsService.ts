@@ -12,7 +12,7 @@ import OBPClientService from './OBPClientService'
 import { AxiosResponse } from 'axios'
 import axios from 'axios'
 import { Session } from 'express-session'
-import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants'
+import { DEFAULT_OBP_API_VERSION } from '../shared-constants'
 
 @Service()
 /**

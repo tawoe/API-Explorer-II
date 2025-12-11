@@ -32,11 +32,7 @@ import OBPClientService from '../services/OBPClientService'
 import { Service, Container } from 'typedi'
 import { OAuthConfig } from 'obp-typescript'
 import { commitId } from '../app'
-import {
-  RESOURCE_DOCS_API_VERSION,
-  MESSAGE_DOCS_API_VERSION,
-  API_VERSIONS_LIST_API_VERSION
-} from '../../src/shared-constants'
+import { DEFAULT_OBP_API_VERSION, MESSAGE_DOCS_API_VERSION, API_VERSIONS_LIST_API_VERSION } from '../shared-constants'
 
 @Service()
 @Controller('/status')
@@ -56,11 +52,7 @@ export class StatusController {
   }
 
   @Get('/')
-  async index(
-    @Session() session: any,
-    @Req() request: Request,
-    @Res() response: Response
-  ): Response {
+  async index(session: any, request: Request, response: Response): Promise<Response> {
     const oauthConfig = session['clientConfig']
     const version = this.obpClientService.getOBPVersion()
 
@@ -109,7 +101,7 @@ export class StatusController {
 
   async checkResourceDocs(oauthConfig: OAuthConfig, version: string): Promise<boolean> {
     try {
-      const path = `/obp/${RESOURCE_DOCS_API_VERSION}/resource-docs/${version}/obp`
+      const path = `/obp/${DEFAULT_OBP_API_VERSION}/resource-docs/${version}/obp`
       const resourceDocs = await this.obpClientService.get(path, oauthConfig)
       return !this.isCodeError(resourceDocs, path)
     } catch (error) {
@@ -129,7 +121,6 @@ export class StatusController {
       return false
     }
   }
-
   async checkApiVersions(oauthConfig: OAuthConfig, version: string): Promise<boolean> {
     try {
       const path = `/obp/${API_VERSIONS_LIST_API_VERSION}/api/versions`

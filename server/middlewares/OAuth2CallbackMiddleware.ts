@@ -29,7 +29,7 @@ import { ExpressMiddlewareInterface } from 'routing-controllers'
 import { Request, Response } from 'express'
 import { Service, Container } from 'typedi'
 import { OAuth2Service } from '../services/OAuth2Service'
-import { DEFAULT_OBP_API_VERSION } from '../../src/shared-constants'
+import { DEFAULT_OBP_API_VERSION } from '../shared-constants'
 import jwt from 'jsonwebtoken'
 
 /**
