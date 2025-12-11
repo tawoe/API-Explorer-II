@@ -39,7 +39,6 @@ import { execSync } from 'child_process'
 import { OAuth2Service } from './services/OAuth2Service'
 
 // Fix __dirname for ESM/tsx compatibility
-const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const port = 8085
